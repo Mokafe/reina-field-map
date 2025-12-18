@@ -1,5 +1,8 @@
 # REINA'S FIELD MAP
 
+![ChatGPT Image 2025年12月18日 18_48_30](https://github.com/user-attachments/assets/6d7f2171-2077-4790-b765-3b3d6848d79f)
+
+
 強化学習（Q-learning / Double Q / Dyna-Q）が 4x4 のフィールドを学習していく様子を、3Dで可視化したデモです。
 
 ## 公開URL
