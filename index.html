@@ -1,4 +1,3 @@
-
 <div style="width:100%; max-width:1100px; margin:0 auto; font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial;">
   <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; padding:12px 4px; border-bottom:1px solid #1f2937;">
     <div>
@@ -6,7 +5,7 @@
         REINA'S FIELD MAP
       </div>
       <div style="color:#94a3b8; font-size:12px; letter-spacing:0.18em; text-transform:uppercase;">
-        Garden Gate / Distorter / Deep Water — RL Visualizer 
+        Garden Gate / Distorter / Deep Water — RL Visualizer
       </div>
     </div>
     <div style="text-align:right;">
@@ -28,6 +27,9 @@
       <button id="btnPath"  style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#eab308; color:#0b1220;">PATH</button>
       <button id="btnPolicy"style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#38bdf8; color:#0b1220;">POLICY</button>
       <button id="btnGrid"  style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#e2e8f0; color:#0b1220;">GRID</button>
+
+      <!-- HELP button (added) -->
+      <button id="btnHelp" style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:900; background:#a78bfa; color:#0b1220;">?</button>
     </div>
 
     <!-- Bottom-right panel -->
@@ -124,6 +126,94 @@
     <div style="background: rgba(15,23,42,0.55); border:1px solid #1f2937; border-radius:16px; padding:14px;">
       <div style="font-weight:900; color:#a78bfa; margin-bottom:10px;">観測端末ログ</div>
       <div id="log" style="height:170px; overflow:auto; font-family: ui-monospace, monospace; font-size:12px; color:#e2e8f0; white-space:pre-wrap; line-height:1.5;"></div>
+    </div>
+  </div>
+
+  <!-- Help Modal (added) -->
+  <div id="helpOverlay" style="
+    position:fixed; inset:0; z-index:9999;
+    display:none;
+    background: rgba(2,6,23,0.72);
+    backdrop-filter: blur(6px);
+    padding: 24px;
+  ">
+    <div style="
+      width: min(760px, 96vw);
+      max-height: 86vh;
+      overflow: auto;
+      margin: 40px auto;
+      border-radius: 18px;
+      border: 1px solid #334155;
+      background: rgba(15,23,42,0.92);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+      color: #e2e8f0;
+      padding: 18px 18px 14px;
+    ">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+        <div>
+          <div style="font-weight:900; font-size:18px; letter-spacing:-0.01em;">
+            このビジュアライゼーションの見方
+          </div>
+          <div style="margin-top:6px; color:#94a3b8; font-size:12px; letter-spacing:0.12em; text-transform:uppercase;">
+            Reina’s Field Map — Quick Guide
+          </div>
+        </div>
+
+        <button id="helpClose" style="
+          cursor:pointer; border:none;
+          padding:8px 12px;
+          border-radius: 999px;
+          font-weight:900;
+          background:#e2e8f0; color:#0b1220;
+        ">閉じる</button>
+      </div>
+
+      <div style="margin-top:14px; line-height:1.7; color:#cbd5e1; font-size:14px;">
+        <div style="padding:12px; border:1px solid #334155; border-radius:14px; background: rgba(2,6,23,0.35);">
+          <div style="font-weight:900; color:#a7f3d0;">何を表している？</div>
+          <ul style="margin:10px 0 0 18px;">
+            <li><b>柱の高さ</b>：そのマスの価値（max Q）＝「ここにいることがどれだけ良いか」</li>
+            <li><b>矢印</b>：そのマスで一番良いと判断されている進行方向（方策）</li>
+            <li><b>色</b>：
+              <span style="color:#a855f7; font-weight:800;">紫＝Distorter</span>（意識を乱す装置）、
+              <span style="color:#ef4444; font-weight:800;">赤＝Deep Water</span>（深み／落下）、
+              <span style="color:#22c55e; font-weight:800;">緑＝Garden Gate</span>（光の庭の入口）
+            </li>
+            <li><b>ノイズ(slip)</b>：意識の乱れ／流れで「思った方向に動けない」確率</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div style="padding:12px; border:1px solid #334155; border-radius:14px; background: rgba(2,6,23,0.35);">
+            <div style="font-weight:900; color:#7dd3fc;">操作のコツ</div>
+            <ul style="margin:10px 0 0 18px;">
+              <li>まずは <b>START</b> で学習開始</li>
+              <li><b>PATH</b>：最適パス（番号）表示</li>
+              <li><b>POLICY</b>：矢印（方策）表示</li>
+              <li><b>RESET</b>：学習を最初から</li>
+            </ul>
+          </div>
+
+          <div style="padding:12px; border:1px solid #334155; border-radius:14px; background: rgba(2,6,23,0.35);">
+            <div style="font-weight:900; color:#a78bfa;">モードの違い</div>
+            <ul style="margin:10px 0 0 18px;">
+              <li><b>Double Q</b>：過大評価を抑えて安定しやすい</li>
+              <li><b>Dyna-Q</b>：観測→モデル→疑似経験で学習が速い</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:14px; padding-top:12px; border-top:1px solid #334155;">
+        <label style="display:flex; align-items:center; gap:8px; color:#cbd5e1; font-size:13px; cursor:pointer;">
+          <input id="helpDontShow" type="checkbox" />
+          次回から表示しない
+        </label>
+
+        <div style="color:#94a3b8; font-size:12px;">
+          ※この設定はこのブラウザに保存されます
+        </div>
+      </div>
     </div>
   </div>
 
@@ -236,6 +326,12 @@
     const btnDoubleQ = document.getElementById('btnDoubleQ');
     const btnDyna = document.getElementById('btnDyna');
 
+    // Help UI (added)
+    const btnHelp = document.getElementById('btnHelp');
+    const helpOverlay = document.getElementById('helpOverlay');
+    const helpClose = document.getElementById('helpClose');
+    const helpDontShow = document.getElementById('helpDontShow');
+
     const dynaBox = document.getElementById('dynaBox');
     const planning = document.getElementById('planning');
     const planningLabel = document.getElementById('planningLabel');
@@ -262,6 +358,33 @@
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
+
+    // ====== Help modal logic (added) ======
+    const HELP_KEY = "reina_help_v1";
+
+    function openHelp(){
+      if (!helpOverlay) return;
+      helpOverlay.style.display = "block";
+    }
+
+    function closeHelp(){
+      if (!helpOverlay) return;
+      try{
+        if (helpDontShow && helpDontShow.checked){
+          localStorage.setItem(HELP_KEY, "1");
+        }
+      }catch(e){}
+      helpOverlay.style.display = "none";
+    }
+
+    // First time auto-open
+    try{
+      if (!localStorage.getItem(HELP_KEY)){
+        openHelp();
+      }
+    }catch(e){
+      openHelp();
+    }
 
     // ====== RL helpers ======
     function getQPolicy(){
@@ -583,7 +706,6 @@
 
     function flushLogs(){
       if (logs.length===0) return;
-      const merged = logs.slice(-60).reverse().join("\n") + "\n";
       // prepend newest
       const existing = elLog.textContent.split("\n").filter(Boolean);
       const newer = logs.slice(-20).reverse();
@@ -598,7 +720,6 @@
       rotation = (rotation + 0.5) % 360;
 
       if (isTraining && episode < MAX_EPISODES){
-        // speed episodes per frame (safe clamp)
         const batch = clamp(speed,1,25);
         for (let i=0;i<batch;i++){
           if (episode>=MAX_EPISODES) break;
@@ -609,7 +730,6 @@
 
       draw();
 
-      // UI throttling
       if (ts - lastUI > 150){
         flushLogs();
         elMode.textContent = (useDoubleQ ? "Double Q" : "Q-learning") + (useDyna ? " + Dyna-Q" : "");
@@ -688,6 +808,18 @@
         b.style.background = "#34d399";
         b.style.color = "#0b1220";
       };
+    });
+
+    // Help wiring (added)
+    btnHelp.onclick = () => openHelp();
+    helpClose.onclick = () => closeHelp();
+
+    helpOverlay.addEventListener("click", (e) => {
+      if (e.target === helpOverlay) closeHelp();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && helpOverlay.style.display === "block") closeHelp();
     });
 
     // initial label sync
