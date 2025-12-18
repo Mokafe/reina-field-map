@@ -1,6 +1,12 @@
 # Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
 
-小説の世界観（「観測端末ログ」「異常窓」「コールドスポット」「位相マッピング」）を説明するための、**でっち上げ（フィクション）ログ**と可視化ダッシュボードです。
+
+
+小説『星見ヶ里』の世界観（観測端末ログ／異常窓／コールドスポット／位相マッピング）を、
+**数理っぽい見た目で説明するためのフィクション用デモ**です。
+
+- データは実測ではなく、物語演出のために生成したサンプル（でっち上げ）です
+- 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出るように作っています
 
 <img width="1536" height="1024" alt="ChatGPT Image 2025年12月19日 01_32_33" src="https://github.com/user-attachments/assets/31ce64b8-83e4-4fee-a33a-e16eac6f271a" />
 
