@@ -9,6 +9,13 @@
 - 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出るように作っています
 
 <img width="1536" height="1024" alt="ChatGPT Image 2025年12月19日 01_32_33" src="https://github.com/user-attachments/assets/31ce64b8-83e4-4fee-a33a-e16eac6f271a" />
+# Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
+https://colab.research.google.com/github/Mokafe/reina-field-map/blob/main/hoshimigato-shrine-sim/notebooks/Hoshimigato_Shrine_Dashboard.ipynb
+)
+
+![preview](docs_preview.png)
 
 
 - 3軸の擬似EMF（X/Y/Z）から MAG = √(X²+Y²+Z²) を計算
