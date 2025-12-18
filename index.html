@@ -1,0 +1,702 @@
+
+<div style="width:100%; max-width:1100px; margin:0 auto; font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; padding:12px 4px; border-bottom:1px solid #1f2937;">
+    <div>
+      <div style="font-weight:900; font-size:28px; letter-spacing:-0.02em; background: linear-gradient(90deg,#60a5fa,#a78bfa,#34d399); -webkit-background-clip:text; background-clip:text; color:transparent;">
+        REINA'S FIELD MAP
+      </div>
+      <div style="color:#94a3b8; font-size:12px; letter-spacing:0.18em; text-transform:uppercase;">
+        Garden Gate / Distorter / Deep Water — RL Visualizer (Colab)
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="display:flex; gap:8px; justify-content:flex-end; align-items:baseline;">
+        <div id="episode" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size:28px; color:#34d399;">0</div>
+        <div style="color:#64748b; font-size:12px;">/ 2000</div>
+      </div>
+      <div style="color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:0.12em;">Episodes</div>
+    </div>
+  </div>
+
+  <div style="position:relative; margin-top:14px;">
+    <canvas id="cv" style="width:100%; height:auto; border-radius:18px; border:1px solid #1f2937; box-shadow: 0 20px 60px rgba(0,0,0,0.45); background: linear-gradient(135deg,#0b1220,#050814);"></canvas>
+
+    <!-- Top-right buttons -->
+    <div style="position:absolute; top:12px; right:12px; display:flex; flex-wrap:wrap; gap:8px;">
+      <button id="btnStart" style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#34d399; color:#0b1220;">▶ START</button>
+      <button id="btnReset" style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#334155; color:#e2e8f0;">↺ RESET</button>
+      <button id="btnPath"  style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#eab308; color:#0b1220;">PATH</button>
+      <button id="btnPolicy"style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#38bdf8; color:#0b1220;">POLICY</button>
+      <button id="btnGrid"  style="cursor:pointer; border:none; padding:10px 12px; border-radius:999px; font-weight:800; background:#e2e8f0; color:#0b1220;">GRID</button>
+    </div>
+
+    <!-- Bottom-right panel -->
+    <div style="position:absolute; bottom:12px; right:12px; width:320px; background: rgba(15,23,42,0.72); backdrop-filter: blur(8px); border:1px solid #334155; border-radius:14px; padding:12px; color:#e2e8f0;">
+      <div style="font-size:12px; color:#cbd5e1; display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="opacity:0.9;">実行設定</span>
+        <span id="mode" style="font-family: ui-monospace, monospace; color:#a7f3d0;">Double Q</span>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="font-size:12px; color:#94a3b8;">学習速度</div>
+        <div style="display:flex; gap:6px;">
+          <button class="spd" data-v="1"  style="cursor:pointer; border:none; padding:6px 9px; border-radius:10px; font-weight:800; background:#334155; color:#e2e8f0;">x1</button>
+          <button class="spd" data-v="2"  style="cursor:pointer; border:none; padding:6px 9px; border-radius:10px; font-weight:800; background:#334155; color:#e2e8f0;">x2</button>
+          <button class="spd" data-v="5"  style="cursor:pointer; border:none; padding:6px 9px; border-radius:10px; font-weight:800; background:#34d399; color:#0b1220;">x5</button>
+          <button class="spd" data-v="10" style="cursor:pointer; border:none; padding:6px 9px; border-radius:10px; font-weight:800; background:#334155; color:#e2e8f0;">x10</button>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="font-size:12px; color:#94a3b8;">Double Q</div>
+        <button id="btnDoubleQ" style="cursor:pointer; border:none; padding:6px 10px; border-radius:10px; font-weight:900; background:#a78bfa; color:#0b1220;">ON</button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="font-size:12px; color:#94a3b8;">Dyna-Q</div>
+        <button id="btnDyna" style="cursor:pointer; border:none; padding:6px 10px; border-radius:10px; font-weight:900; background:#334155; color:#e2e8f0;">OFF</button>
+      </div>
+
+      <div id="dynaBox" style="opacity:0.5; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8;">
+          <span>planning n</span><span id="planningLabel" style="font-family: ui-monospace, monospace; color:#e2e8f0;">10</span>
+        </div>
+        <input id="planning" type="range" min="0" max="30" value="10" style="width:100%;" />
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8;">
+          <span>ノイズ強度(slip)</span><span id="noiseLabel" style="font-family: ui-monospace, monospace; color:#e2e8f0;">1.00</span>
+        </div>
+        <input id="noise" type="range" min="0" max="200" value="100" style="width:100%;" />
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr; gap:10px; padding-top:10px; border-top:1px solid #334155;">
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8;">
+            <span>ε 探索率</span><span id="epsLabel" style="font-family: ui-monospace, monospace; color:#e2e8f0;">0.10</span>
+          </div>
+          <input id="eps" type="range" min="0" max="50" value="10" style="width:100%;" />
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8;">
+            <span>α 学習率</span><span id="alphaLabel" style="font-family: ui-monospace, monospace; color:#e2e8f0;">0.15</span>
+          </div>
+          <input id="alpha" type="range" min="1" max="50" value="15" style="width:100%;" />
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8;">
+            <span>γ 割引率</span><span id="gammaLabel" style="font-family: ui-monospace, monospace; color:#e2e8f0;">0.95</span>
+          </div>
+          <input id="gamma" type="range" min="70" max="99" value="95" style="width:100%;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:14px;">
+    <div style="background: rgba(15,23,42,0.55); border:1px solid #1f2937; border-radius:16px; padding:14px;">
+      <div style="font-weight:900; color:#34d399; margin-bottom:10px;">学習統計</div>
+      <div style="color:#94a3b8; font-size:13px; line-height:1.8;">
+        <div style="display:flex; justify-content:space-between;"><span>Max Q</span><span id="maxQ" style="font-family: ui-monospace, monospace; color:#a7f3d0;">0.00</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>Avg Q</span><span id="avgQ" style="font-family: ui-monospace, monospace; color:#7dd3fc;">0.00</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>成功 / 落下</span><span id="sf" style="font-family: ui-monospace, monospace; color:#e2e8f0;">0 / 0</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>成功率</span><span id="sr" style="font-family: ui-monospace, monospace; color:#e2e8f0;">0.0%</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>最適パス長</span><span id="pl" style="font-family: ui-monospace, monospace; color:#e2e8f0;">-</span></div>
+      </div>
+    </div>
+
+    <div style="background: rgba(15,23,42,0.55); border:1px solid #1f2937; border-radius:16px; padding:14px;">
+      <div style="font-weight:900; color:#38bdf8; margin-bottom:10px;">凡例</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:13px; color:#cbd5e1;">
+        <div style="display:flex; align-items:center; gap:8px;"><span style="width:14px; height:14px; background:#38bdf8; border-radius:4px; display:inline-block;"></span>Start (S)</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span style="width:14px; height:14px; background:#22c55e; border-radius:4px; display:inline-block;"></span>Garden Gate (G)</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span style="width:14px; height:14px; background:#ef4444; border-radius:4px; display:inline-block;"></span>Deep Water (W)</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span style="width:14px; height:14px; background:#a855f7; border-radius:4px; display:inline-block;"></span>Distorter (D)</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span style="width:14px; height:14px; background:#64748b; border-radius:4px; display:inline-block;"></span>Field (F)</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span style="width:14px; height:14px; background:rgba(255,255,255,0.7); border-radius:4px; display:inline-block;"></span>Policy</div>
+      </div>
+      <div style="margin-top:10px; padding-top:10px; border-top:1px solid #334155; font-size:12px; color:#94a3b8;">
+        柱の高さ＝そのマスの価値（max Q）
+      </div>
+    </div>
+
+    <div style="background: rgba(15,23,42,0.55); border:1px solid #1f2937; border-radius:16px; padding:14px;">
+      <div style="font-weight:900; color:#a78bfa; margin-bottom:10px;">観測端末ログ</div>
+      <div id="log" style="height:170px; overflow:auto; font-family: ui-monospace, monospace; font-size:12px; color:#e2e8f0; white-space:pre-wrap; line-height:1.5;"></div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    // ====== Config ======
+    const GRID = 4;
+    const N_STATES = GRID*GRID;
+    const N_ACTIONS = 4; // L,D,R,U
+    const MAX_EPISODES = 2000;
+    const MAX_STEPS = 25;
+
+    const gridMap = [
+      ['S','F','D','F'],
+      ['F','W','F','D'],
+      ['F','F','F','W'],
+      ['D','F','F','G'],
+    ];
+
+    const TILE_COLOR = {
+      'S':[56,189,248],
+      'G':[34,197,94],
+      'W':[239,68,68],
+      'D':[168,85,247],
+      'F':[100,116,200]
+    };
+
+    function createQ(){
+      return Array.from({length:N_STATES}, ()=> Array(N_ACTIONS).fill(0));
+    }
+
+    function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+
+    function argmaxRandomTie(arr){
+      let best = -Infinity;
+      for (const v of arr) best = Math.max(best, v);
+      const idx = [];
+      for (let i=0;i<arr.length;i++) if (arr[i]===best) idx.push(i);
+      return idx[Math.floor(Math.random()*idx.length)];
+    }
+
+    function s2rc(s){ return [Math.floor(s/GRID), s%GRID]; }
+    function tileAt(s){ const [r,c]=s2rc(s); return gridMap[r][c]; }
+
+    function getNextState(s,a){
+      const r = Math.floor(s/GRID), c = s%GRID;
+      if (a===0) return c>0 ? s-1 : s;
+      if (a===1) return r<GRID-1 ? s+GRID : s;
+      if (a===2) return c<GRID-1 ? s+1 : s;
+      if (a===3) return r>0 ? s-GRID : s;
+      return s;
+    }
+
+    function actionVec(a){
+      if (a===0) return [-1,0];
+      if (a===1) return [0,1];
+      if (a===2) return [1,0];
+      return [0,-1];
+    }
+
+    // ====== State ======
+    let isTraining = false;
+    let episode = 0;
+    let success = 0;
+    let fall = 0;
+
+    let showGrid = true;
+    let showPath = true;
+    let showPolicy = true;
+
+    let speed = 5;
+    let useDoubleQ = true;
+    let useDyna = false;
+    let planningSteps = 10;
+
+    let alpha = 0.15, gamma = 0.95, epsilon = 0.10;
+    let noiseScale = 1.00;
+
+    let Q1 = createQ();
+    let Q2 = createQ();
+
+    // Dyna model
+    const model = new Map(); // key "s|a" -> {nextS,reward,done}
+    const modelKeys = [];
+
+    // Log
+    let logs = [];
+
+    // Rotation
+    let rotation = 0;
+
+    // ====== UI elements ======
+    const cv = document.getElementById('cv');
+    const ctx = cv.getContext('2d');
+
+    const elEpisode = document.getElementById('episode');
+    const elMaxQ = document.getElementById('maxQ');
+    const elAvgQ = document.getElementById('avgQ');
+    const elSF = document.getElementById('sf');
+    const elSR = document.getElementById('sr');
+    const elPL = document.getElementById('pl');
+    const elLog = document.getElementById('log');
+    const elMode = document.getElementById('mode');
+
+    const btnStart = document.getElementById('btnStart');
+    const btnReset = document.getElementById('btnReset');
+    const btnPath  = document.getElementById('btnPath');
+    const btnPolicy= document.getElementById('btnPolicy');
+    const btnGrid  = document.getElementById('btnGrid');
+    const btnDoubleQ = document.getElementById('btnDoubleQ');
+    const btnDyna = document.getElementById('btnDyna');
+
+    const dynaBox = document.getElementById('dynaBox');
+    const planning = document.getElementById('planning');
+    const planningLabel = document.getElementById('planningLabel');
+
+    const noise = document.getElementById('noise');
+    const noiseLabel = document.getElementById('noiseLabel');
+
+    const eps = document.getElementById('eps');
+    const epsLabel = document.getElementById('epsLabel');
+    const alphaEl = document.getElementById('alpha');
+    const alphaLabel = document.getElementById('alphaLabel');
+    const gammaEl = document.getElementById('gamma');
+    const gammaLabel = document.getElementById('gammaLabel');
+
+    // Canvas sizing (HiDPI)
+    function resizeCanvas(){
+      const rect = cv.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      cv.width = Math.floor(rect.width * dpr);
+      cv.height = Math.floor((rect.width * 0.60) * dpr);
+      cv.style.height = 'auto';
+      cv.style.aspectRatio = '12 / 7';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // ====== RL helpers ======
+    function getQPolicy(){
+      if (!useDoubleQ) return Q1;
+      // Q = (Q1+Q2)/2
+      const Q = createQ();
+      for (let s=0;s<N_STATES;s++){
+        for (let a=0;a<N_ACTIONS;a++){
+          Q[s][a] = 0.5*(Q1[s][a]+Q2[s][a]);
+        }
+      }
+      return Q;
+    }
+
+    function statsFromQ(Q){
+      const all = Q.flat();
+      let maxQ = -Infinity, sum=0;
+      for (const v of all){ if (v>maxQ) maxQ=v; sum+=v; }
+      return { maxQ, avgQ: sum/all.length };
+    }
+
+    function computeOptimalPath(Q){
+      const path = [0];
+      let s = 0;
+      const visited = new Set([0]);
+      for (let i=0;i<15;i++){
+        const a = argmaxRandomTie(Q[s]);
+        const ns = getNextState(s,a);
+        if (ns===s) break;
+        if (visited.has(ns)) break;
+        visited.add(ns);
+        path.push(ns);
+        const t = tileAt(ns);
+        if (t==='G' || t==='W') break;
+        s = ns;
+      }
+      return path;
+    }
+
+    function slipProb(tileFrom){
+      const base = { 'S':0.0, 'G':0.0, 'F':0.05, 'D':0.25, 'W':0.12 }[tileFrom] ?? 0.05;
+      return clamp(base*noiseScale, 0, 0.7);
+    }
+
+    function stepWithSlip(s, a){
+      const tileFrom = tileAt(s);
+      const sp = slipProb(tileFrom);
+      const slipped = Math.random() < sp;
+      let aExec = a;
+
+      if (slipped){
+        if (tileFrom==='W'){
+          const biased = [1,1,2,0,3]; // down-heavy
+          aExec = biased[Math.floor(Math.random()*biased.length)];
+        } else {
+          aExec = Math.floor(Math.random()*N_ACTIONS);
+        }
+      }
+
+      const nextS = getNextState(s, aExec);
+      const tileTo = tileAt(nextS);
+
+      let reward = -0.1;
+      let done = false;
+
+      if (tileTo==='G'){ reward = +20; done=true; }
+      else if (tileTo==='W'){ reward = -25; done=true; }
+      else if (tileTo==='D'){ reward = -1.0; done=false; }
+      else { reward = -0.1; done=false; }
+
+      if (slipped) logs.push(`端末LOG: ノイズ介入 → 行動が逸れた (tile:${tileFrom} exec:${a}->${aExec})`);
+      if (tileTo==='D') logs.push(`端末LOG: Distorter反応（意識同期の乱れ） at s=${nextS}`);
+      if (tileTo==='W') logs.push(`端末LOG: 深みに落下（セッション遮断） at s=${nextS}`);
+      if (tileTo==='G') logs.push(`端末LOG: ゲート検知（光の庭入口） at s=${nextS}`);
+
+      return {nextS, reward, done, tileFrom, tileTo};
+    }
+
+    function modelKey(s,a){ return s + "|" + a; }
+
+    function recordModel(s,a,tr){
+      const k = modelKey(s,a);
+      if (!model.has(k)) modelKeys.push(k);
+      model.set(k, {nextS: tr.nextS, reward: tr.reward, done: tr.done});
+    }
+
+    function qUpdateSingle(s,a,reward,nextS,done){
+      const nextMax = done ? 0 : Math.max(...Q1[nextS]);
+      Q1[s][a] += alpha * (reward + gamma*nextMax - Q1[s][a]);
+    }
+
+    function qUpdateDouble(s,a,reward,nextS,done){
+      const coin = Math.random() < 0.5;
+      if (coin){
+        const aStar = done ? 0 : argmaxRandomTie(Q1[nextS]);
+        const target = reward + (done ? 0 : gamma * Q2[nextS][aStar]);
+        Q1[s][a] += alpha*(target - Q1[s][a]);
+      } else {
+        const aStar = done ? 0 : argmaxRandomTie(Q2[nextS]);
+        const target = reward + (done ? 0 : gamma * Q1[nextS][aStar]);
+        Q2[s][a] += alpha*(target - Q2[s][a]);
+      }
+    }
+
+    function planningUpdates(){
+      if (!useDyna) return;
+      if (modelKeys.length===0) return;
+      const n = clamp(planningSteps, 0, 50);
+      for (let i=0;i<n;i++){
+        const k = modelKeys[Math.floor(Math.random()*modelKeys.length)];
+        const parts = k.split("|");
+        const s = Number(parts[0]), a = Number(parts[1]);
+        const tr = model.get(k);
+        if (!tr) continue;
+        if (useDoubleQ) qUpdateDouble(s,a,tr.reward,tr.nextS,tr.done);
+        else qUpdateSingle(s,a,tr.reward,tr.nextS,tr.done);
+      }
+    }
+
+    function chooseAction(Q,s){
+      if (Math.random() < epsilon) return Math.floor(Math.random()*N_ACTIONS);
+      return argmaxRandomTie(Q[s]);
+    }
+
+    function runOneEpisode(){
+      const Q = getQPolicy();
+      let s = 0;
+      let ended = "timeout";
+
+      for (let t=0;t<MAX_STEPS;t++){
+        const a = chooseAction(Q,s);
+        const tr = stepWithSlip(s,a);
+
+        if (useDoubleQ) qUpdateDouble(s,a,tr.reward,tr.nextS,tr.done);
+        else qUpdateSingle(s,a,tr.reward,tr.nextS,tr.done);
+
+        recordModel(s,a,tr);
+        planningUpdates();
+
+        s = tr.nextS;
+        if (tr.done){
+          ended = (tr.tileTo==='G') ? "goal" : "water";
+          break;
+        }
+      }
+
+      if (ended==="goal") success++;
+      if (ended==="water") fall++;
+    }
+
+    // ====== Rendering ======
+    function draw(){
+      const rect = cv.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.width*0.60;
+
+      // background
+      const bg = ctx.createRadialGradient(w/2,h/2,50,w/2,h/2,w);
+      bg.addColorStop(0,"#1e293b");
+      bg.addColorStop(0.55,"#0f172a");
+      bg.addColorStop(1,"#020617");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0,0,w,h);
+
+      // stars
+      ctx.fillStyle = "rgba(255,255,255,0.25)";
+      for (let i=0;i<100;i++){
+        const x = (i*137.5) % w;
+        const y = (i*73.3) % h;
+        ctx.fillRect(x,y,1,1);
+      }
+
+      const centerX = w/2;
+      const centerY = h/2 + 40;
+      const scale = Math.min(72, w/14);
+      const rad = rotation * Math.PI / 180;
+      const tilt = 0.5;
+
+      function project(x,y,z){
+        const xRot = x*Math.cos(rad) - z*Math.sin(rad);
+        const zRot = x*Math.sin(rad) + z*Math.cos(rad);
+        const yTilt = y*Math.cos(tilt) - zRot*Math.sin(tilt);
+        const zTilt = y*Math.sin(tilt) + zRot*Math.cos(tilt);
+        const perspective = 600 / (600 + zTilt);
+        return { x: centerX + xRot*scale*perspective, y: centerY - yTilt*scale*perspective, z: zTilt };
+      }
+
+      if (showGrid){
+        ctx.strokeStyle = "rgba(100,116,139,0.2)";
+        ctx.lineWidth = 1;
+        for (let i=0;i<=GRID;i++){
+          const p1 = project(i-2,0,-2);
+          const p2 = project(i-2,0, 2);
+          ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+
+          const p3 = project(-2,0,i-2);
+          const p4 = project( 2,0,i-2);
+          ctx.beginPath(); ctx.moveTo(p3.x,p3.y); ctx.lineTo(p4.x,p4.y); ctx.stroke();
+        }
+      }
+
+      const Q = getQPolicy();
+      const st = statsFromQ(Q);
+      const opt = computeOptimalPath(Q);
+
+      // pillars
+      const pillars = [];
+      for (let r=0;r<GRID;r++){
+        for (let c=0;c<GRID;c++){
+          const s = r*GRID+c;
+          const maxQ = Math.max(...Q[s]);
+          const hVal = clamp(0.15 + Math.max(0,maxQ)/8, 0.15, 2.0);
+          const x0 = c-1.5, z0 = r-1.5, size=0.85;
+
+          const pts = [
+            project(x0,0,z0), project(x0+size,0,z0), project(x0+size,0,z0+size), project(x0,0,z0+size),
+            project(x0,hVal,z0), project(x0+size,hVal,z0), project(x0+size,hVal,z0+size), project(x0,hVal,z0+size)
+          ];
+          pillars.push({s,r,c,maxQ,hVal,x0,z0,size,pts});
+        }
+      }
+      pillars.sort((a,b)=> ((a.pts[0].z+a.pts[2].z)/2) - ((b.pts[0].z+b.pts[2].z)/2));
+
+      const faces = [[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]];
+
+      for (const p of pillars){
+        const t = gridMap[p.r][p.c];
+        let col = TILE_COLOR[t] || [100,116,200];
+
+        const isOnPath = showPath && opt.includes(p.s);
+        const pathIdx = opt.indexOf(p.s);
+
+        if (isOnPath) col = col.map(v=>Math.min(255, v*1.25));
+
+        // sides
+        faces.forEach((f,i)=>{
+          ctx.beginPath();
+          f.forEach((vidx,j)=>{ const pt=p.pts[vidx]; j===0?ctx.moveTo(pt.x,pt.y):ctx.lineTo(pt.x,pt.y); });
+          ctx.closePath();
+          const shade = 0.5 + i*0.12;
+          const sc = col.map(v=>Math.floor(v*shade));
+          ctx.fillStyle = `rgba(${sc[0]},${sc[1]},${sc[2]},0.90)`;
+          ctx.fill();
+          ctx.strokeStyle = "rgba(255,255,255,0.10)";
+          ctx.stroke();
+        });
+
+        // top
+        ctx.beginPath();
+        [4,5,6,7].forEach((vidx,j)=>{ const pt=p.pts[vidx]; j===0?ctx.moveTo(pt.x,pt.y):ctx.lineTo(pt.x,pt.y); });
+        ctx.closePath();
+
+        const topC = { x:(p.pts[4].x+p.pts[6].x)/2, y:(p.pts[4].y+p.pts[6].y)/2 };
+        const grad = ctx.createRadialGradient(topC.x,topC.y,0, topC.x,topC.y, 30);
+        grad.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},1.0)`);
+        grad.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0.7)`);
+        ctx.fillStyle = grad;
+
+        if (isOnPath || p.hVal>1.0){
+          ctx.shadowBlur = isOnPath ? 22 : 14;
+          ctx.shadowColor = `rgba(${col[0]},${col[1]},${col[2]},0.75)`;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},0.85)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // path idx
+        if (isOnPath && pathIdx>=0){
+          const ct = {
+            x:(p.pts[4].x+p.pts[5].x+p.pts[6].x+p.pts[7].x)/4,
+            y:(p.pts[4].y+p.pts[5].y+p.pts[6].y+p.pts[7].y)/4
+          };
+          ctx.font = "bold 14px system-ui";
+          ctx.textAlign="center"; ctx.textBaseline="middle";
+          ctx.lineWidth=3; ctx.strokeStyle="#000";
+          ctx.strokeText(String(pathIdx), ct.x, ct.y-12);
+          ctx.fillStyle="#fff";
+          ctx.fillText(String(pathIdx), ct.x, ct.y-12);
+        }
+
+        // policy arrow
+        if (showPolicy){
+          const aBest = argmaxRandomTie(Q[p.s]);
+          const [dx,dz] = actionVec(aBest);
+          const cx = p.x0+p.size/2, cz = p.z0+p.size/2;
+          const y = p.hVal + 0.02;
+          const p1 = project(cx,y,cz);
+          const p2 = project(cx+dx*0.35,y,cz+dz*0.35);
+
+          ctx.strokeStyle="rgba(255,255,255,0.75)";
+          ctx.lineWidth=2;
+          ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+
+          const ang = Math.atan2(p2.y-p1.y, p2.x-p1.x);
+          const head=7;
+          ctx.beginPath();
+          ctx.moveTo(p2.x,p2.y);
+          ctx.lineTo(p2.x-head*Math.cos(ang-0.6), p2.y-head*Math.sin(ang-0.6));
+          ctx.lineTo(p2.x-head*Math.cos(ang+0.6), p2.y-head*Math.sin(ang+0.6));
+          ctx.closePath();
+          ctx.fillStyle="rgba(255,255,255,0.75)";
+          ctx.fill();
+        }
+      }
+
+      // HUD (update panel)
+      elEpisode.textContent = episode;
+      elMaxQ.textContent = st.maxQ.toFixed(2);
+      elAvgQ.textContent = st.avgQ.toFixed(2);
+      elSF.textContent = `${success} / ${fall}`;
+      const total = success+fall;
+      const rate = total>0 ? (100*success/total) : 0;
+      elSR.textContent = `${rate.toFixed(1)}%`;
+      elPL.textContent = `${opt.length} steps`;
+    }
+
+    function flushLogs(){
+      if (logs.length===0) return;
+      const merged = logs.slice(-60).reverse().join("\n") + "\n";
+      // prepend newest
+      const existing = elLog.textContent.split("\n").filter(Boolean);
+      const newer = logs.slice(-20).reverse();
+      const out = newer.concat(existing).slice(0,60).join("\n");
+      elLog.textContent = out;
+      logs = [];
+    }
+
+    // ====== Loop ======
+    let lastUI = 0;
+    function tick(ts){
+      rotation = (rotation + 0.5) % 360;
+
+      if (isTraining && episode < MAX_EPISODES){
+        // speed episodes per frame (safe clamp)
+        const batch = clamp(speed,1,25);
+        for (let i=0;i<batch;i++){
+          if (episode>=MAX_EPISODES) break;
+          runOneEpisode();
+          episode++;
+        }
+      }
+
+      draw();
+
+      // UI throttling
+      if (ts - lastUI > 150){
+        flushLogs();
+        elMode.textContent = (useDoubleQ ? "Double Q" : "Q-learning") + (useDyna ? " + Dyna-Q" : "");
+        lastUI = ts;
+      }
+
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // ====== UI wiring ======
+    function setBtnState(){
+      btnStart.textContent = isTraining ? "⏸ PAUSE" : "▶ START";
+      btnStart.style.background = isTraining ? "#f59e0b" : "#34d399";
+      btnStart.style.color = "#0b1220";
+
+      btnPath.style.background  = showPath ? "#eab308" : "#334155";
+      btnPath.style.color       = showPath ? "#0b1220" : "#e2e8f0";
+
+      btnPolicy.style.background= showPolicy ? "#38bdf8" : "#334155";
+      btnPolicy.style.color     = showPolicy ? "#0b1220" : "#e2e8f0";
+
+      btnGrid.style.background  = showGrid ? "#e2e8f0" : "#334155";
+      btnGrid.style.color       = showGrid ? "#0b1220" : "#e2e8f0";
+
+      btnDoubleQ.textContent    = useDoubleQ ? "ON" : "OFF";
+      btnDoubleQ.style.background = useDoubleQ ? "#a78bfa" : "#334155";
+      btnDoubleQ.style.color      = useDoubleQ ? "#0b1220" : "#e2e8f0";
+
+      btnDyna.textContent       = useDyna ? "ON" : "OFF";
+      btnDyna.style.background  = useDyna ? "#60a5fa" : "#334155";
+      btnDyna.style.color       = useDyna ? "#0b1220" : "#e2e8f0";
+
+      dynaBox.style.opacity     = useDyna ? "1.0" : "0.5";
+    }
+
+    btnStart.onclick = ()=>{
+      isTraining = !isTraining;
+      setBtnState();
+      if (isTraining) logs.push("端末LOG: 学習開始（観測セッション起動）");
+      else logs.push("端末LOG: 学習停止（観測セッション一時停止）");
+    };
+
+    btnReset.onclick = ()=>{
+      isTraining = false;
+      episode=0; success=0; fall=0;
+      Q1 = createQ(); Q2 = createQ();
+      model.clear(); modelKeys.length=0;
+      logs = ["端末LOG: リセット完了（メモリ消去）"];
+      elLog.textContent = "";
+      setBtnState();
+    };
+
+    btnPath.onclick = ()=>{ showPath=!showPath; setBtnState(); };
+    btnPolicy.onclick = ()=>{ showPolicy=!showPolicy; setBtnState(); };
+    btnGrid.onclick = ()=>{ showGrid=!showGrid; setBtnState(); };
+
+    btnDoubleQ.onclick = ()=>{ useDoubleQ=!useDoubleQ; setBtnState(); };
+    btnDyna.onclick = ()=>{ useDyna=!useDyna; setBtnState(); };
+
+    planning.oninput = (e)=>{ planningSteps = Number(e.target.value); planningLabel.textContent = planningSteps; };
+    noise.oninput = (e)=>{ noiseScale = Number(e.target.value)/100; noiseLabel.textContent = noiseScale.toFixed(2); };
+
+    eps.oninput = (e)=>{ epsilon = Number(e.target.value)/100; epsLabel.textContent = epsilon.toFixed(2); };
+    alphaEl.oninput = (e)=>{ alpha = Number(e.target.value)/100; alphaLabel.textContent = alpha.toFixed(2); };
+    gammaEl.oninput = (e)=>{ gamma = Number(e.target.value)/100; gammaLabel.textContent = gamma.toFixed(2); };
+
+    // speed buttons
+    document.querySelectorAll(".spd").forEach(b=>{
+      b.onclick = ()=>{
+        speed = Number(b.dataset.v);
+        document.querySelectorAll(".spd").forEach(x=>{
+          x.style.background = "#334155";
+          x.style.color = "#e2e8f0";
+        });
+        b.style.background = "#34d399";
+        b.style.color = "#0b1220";
+      };
+    });
+
+    // initial label sync
+    planningLabel.textContent = planningSteps;
+    noiseLabel.textContent = noiseScale.toFixed(2);
+    epsLabel.textContent = epsilon.toFixed(2);
+    alphaLabel.textContent = alpha.toFixed(2);
+    gammaLabel.textContent = gamma.toFixed(2);
+    setBtnState();
+  })();
+  </script>
+</div>
