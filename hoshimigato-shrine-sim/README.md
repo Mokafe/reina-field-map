@@ -2,6 +2,9 @@
 
 小説の世界観（「観測端末ログ」「異常窓」「コールドスポット」「位相マッピング」）を説明するための、**でっち上げ（フィクション）ログ**と可視化ダッシュボードです。
 
+<img width="1536" height="1024" alt="ChatGPT Image 2025年12月19日 01_32_33" src="https://github.com/user-attachments/assets/31ce64b8-83e4-4fee-a33a-e16eac6f271a" />
+
+
 - 3軸の擬似EMF（X/Y/Z）から MAG = √(X²+Y²+Z²) を計算
 - 事件窓（event_flag=1）でスパイク群発 + 温度低下（コールドスポット）
 - X/Y を複素平面に見立て、位相 `phase = arctan2(Y, X)` を可視化
