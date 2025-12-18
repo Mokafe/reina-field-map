@@ -1,4 +1,4 @@
-# Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
+# Hoshimigato Komizu Ado　Shrine Sensor Log (Fictional) — Sample Data + Dashboard
 
 📖 原作（note）：「第七章　夜の神社と探偵ごっこ」  
 https://note.com/major_ruff2386/n/n478d06567843?magazine_key=m60ea3421f863
