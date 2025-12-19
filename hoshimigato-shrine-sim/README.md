@@ -10,8 +10,12 @@ https://note.com/major_ruff2386/n/n478d06567843?magazine_key=m60ea3421f863
 - データは実測ではなく、物語演出のために作ったサンプル（でっち上げ）です
 - 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出るように作っています
 
-<img width="1536" height="1024" alt="ChatGPT Image 2025年12月19日 01_32_33" src="https://github.com/user-attachments/assets/31ce64b8-83e4-4fee-a33a-e16eac6f271a" />
+
 # Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
+<img width="1536" height="1024" alt="ChatGPT Image 2025年12月19日 01_32_33" src="https://github.com/user-attachments/assets/31ce64b8-83e4-4fee-a33a-e16eac6f271a" />
+
+https://github.com/user-attachments/assets/3674f86e-523c-4d86-b51b-d6bd5efb6ca4
+
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/Mokafe/reina-field-map/blob/main/hoshimigato-shrine-sim/notebooks/Hoshimigato_Shrine_Dashboard.ipynb
