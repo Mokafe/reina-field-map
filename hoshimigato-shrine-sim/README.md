@@ -29,7 +29,7 @@ https://colab.research.google.com/github/Mokafe/reina-field-map/blob/main/hoshim
 - 事件窓（event_flag=1）でスパイク群発 + 温度低下（コールドスポット）
 - X/Y を複素平面に見立て、位相 `phase = arctan2(Y, X)` を可視化
 
-> 注意: これは物語説明用の合成データです。実測データではありません。
+> 注意: これは物語説明用のデータです。実測データではありません。
 
 ---
 
