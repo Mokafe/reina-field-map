@@ -7,15 +7,14 @@ https://note.com/major_ruff2386/n/n478d06567843?magazine_key=m60ea3421f863
 小説『『ほんまもんを選ぶ夏 ― 星見ケ里の光と影』の世界観（観測端末ログ／異常窓／コールドスポット／位相マッピング）を、
 **数理っぽい見た目で説明するためのフィクション用デモ**です。
 
-- データは実測ではなく、物語演出のために作ったサンプル（でっち上げ）です
-- 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出るように作っています
-
-
-
 https://github.com/user-attachments/assets/449f17c6-fbb5-4c15-84e8-cb6a642eabc2
 
 
 # Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
+
+- データは実測ではなく、物語演出のために作ったサンプル（それっぽいもの）です
+- 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出るように作っています
+
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/Mokafe/reina-field-map/blob/main/hoshimigato-shrine-sim/notebooks/Hoshimigato_Shrine_Dashboard.ipynb
