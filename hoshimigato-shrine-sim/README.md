@@ -13,7 +13,7 @@ https://github.com/user-attachments/assets/449f17c6-fbb5-4c15-84e8-cb6a642eabc2
 # Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
 
 - データは実測ではなく、物語演出のために作ったサンプル（それっぽいもの）です
-- 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出るように作っています
+- 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出ていますが、物語説明のためのデータです
 
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
