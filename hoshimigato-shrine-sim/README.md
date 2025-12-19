@@ -12,9 +12,11 @@ https://note.com/major_ruff2386/n/n478d06567843?magazine_key=m60ea3421f863
 
 
 # Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
-<img width="1536" height="1024" alt="ChatGPT Image 2025年12月19日 01_32_33" src="https://github.com/user-attachments/assets/31ce64b8-83e4-4fee-a33a-e16eac6f271a" />
 
-https://github.com/user-attachments/assets/3674f86e-523c-4d86-b51b-d6bd5efb6ca4
+
+
+https://github.com/user-attachments/assets/449f17c6-fbb5-4c15-84e8-cb6a642eabc2
+
 
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
