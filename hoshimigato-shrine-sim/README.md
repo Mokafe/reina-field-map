@@ -11,17 +11,17 @@ https://note.com/major_ruff2386/n/n478d06567843?magazine_key=m60ea3421f863
 - 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出るように作っています
 
 
-# Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
-
-
 
 https://github.com/user-attachments/assets/449f17c6-fbb5-4c15-84e8-cb6a642eabc2
 
 
+# Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/Mokafe/reina-field-map/blob/main/hoshimigato-shrine-sim/notebooks/Hoshimigato_Shrine_Dashboard.ipynb
 )
+
+
 
 ![preview](docs_preview.png)
 
