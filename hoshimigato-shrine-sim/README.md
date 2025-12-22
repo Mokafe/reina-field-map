@@ -1,50 +1,69 @@
-# Hoshimigato Shrine Simulation (story-to-ML)
+# Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
 
-This folder is a **Colab-friendly mini-project** that turns the *Hoshimigato* story world into a compact dataset for **EM/GMM** experimentation.
+小説の世界観（「観測端末ログ」「異常窓」「コールドスポット」「位相マッピング」）を説明するための、**でっち上げ（フィクション）ログ**生成と可視化ダッシュボードです。
 
-- **science event = t=0** (all characters align here)
-- features: `x1`, `x2`, `alpha`, latent-ish `z`, and `entropy`
-- includes 6 characters: **misaki / takumi / kurokawa / reina / aoi / tome**
+- 3軸の擬似EMF（X/Y/Z）から MAG = √(X²+Y²+Z²) を計算
+- 事件窓（event_flag=1）でスパイク群発 + 温度低下（コールドスポット）
+- X/Y を複素平面に見立て、位相 `phase = arctan2(Y, X)` を可視化
 
-## What’s inside
+> 注意: これは物語説明用の合成データです。実測データではありません。
 
-- `data/hoshike_all_data_en.csv` (main dataset; ~120 rows)
-- `data/teachcut/teachcut_peak_band.csv` (only the *entropy-peak band* per character)
-- `scripts/run_all.py` (one-command pipeline)
-- `src/` (plot + EM/GMM helpers)
-- `notebooks/` (Colab notebooks)
+---
 
-## Quick start (local)
+## 収録物
+
+- `data/hoshimigato_shrine_sample.csv` / `data/hoshimigato_shrine_sample.json`  
+  可視化デモ用サンプルログ（dt=0.5秒、2000サンプル、イベント窓=600〜800秒）
+- `src/hoshimigato/`  
+  読み込み (`io.py`) / 可視化 (`plotting.py`)
+- `notebooks/Hoshimigato_Shrine_Dashboard.ipynb`  
+  Colab向けノートブック（そのまま実行）
+
+---
+
+## すぐ動かす（ローカル）
+
+> `scripts/plot_dashboard.py` は `src/` を自動で Python パスに追加するので、そのまま動きます。
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate  # Windowsは .venv\Scripts\activate
 pip install -r requirements.txt
-python scripts/run_all.py --data data/hoshike_all_data_en.csv
+python scripts/plot_dashboard.py --input data/hoshimigato_shrine_sample.csv
 ```
 
-Outputs will be written under `outputs/`:
-- `outputs/plots_en.pdf` (event annotations + x1/x2/alpha alongside entropy, per character)
-- `outputs/figures/gmm_overlay_x1x2.png` (EM/GMM overlay in x1-x2)
-- `outputs/teachcut/teachcut_peak_band.csv` (peak-band cut)
+---
 
-## Quick start (Colab)
+## Colabで動かす（GitHubに置いた後）
 
-After you push this folder to GitHub, open the notebook:
-
-- `notebooks/00_quickstart_colab.ipynb`
-
-If you place this folder under:
-
-- `Mokafe/reina-field-map/main/hoshimigato-shrine-sim/`
-
-then your Colab URL will be:
+1. このリポジトリをGitHubにpush
+2. Colabで次のURL形式を開く（自分のユーザー名/リポジトリ名に置換）
 
 ```text
-https://colab.research.google.com/github/Mokafe/reina-field-map/blob/main/hoshimigato-shrine-sim/notebooks/00_quickstart_colab.ipynb
+https://colab.research.google.com/github/<YOUR_GITHUB>/<REPO_NAME>/blob/main/notebooks/Hoshimigato_Shrine_Dashboard.ipynb
 ```
 
-## Notes
+ノートブック内で `pip install -r requirements.txt` を実行後、サンプルCSV/JSONを読み込んで描画します。
 
-- Event text is translated into `event_en` for plotting, but the original `event` is kept.
-- The “entropy peak band” is defined as `t_peak ± 1` (per character), then intersected with the character’s available `t`.
+---
 
-Generated on 2025-12-22.
+## データ形式
+
+CSV/JSONともに列は同じです（JSONは `{"metadata":..., "records":[...]}` 形式）。
+
+| column | meaning |
+|---|---|
+| t_sec | 時刻（秒） |
+| X, Y, Z | 擬似EMF 3軸（mG） |
+| MAG | √(X² + Y² + Z²)（mG） |
+| temp | 温度（°C） |
+| phase | `arctan2(Y, X)`（ラジアン） |
+| event_flag | 事件窓フラグ（0/1） |
+| terminal_id | 観測端末ID |
+| location | ロケーション名 |
+
+---
+
+## ライセンス
+
+MIT License（自由に改変・再配布OK）
