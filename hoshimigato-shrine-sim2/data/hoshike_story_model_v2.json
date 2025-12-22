@@ -1,0 +1,284 @@
+{
+  "meta": {
+    "t0": "science_event",
+    "total_points": 110,
+    "model": "GMM / EM narrative benchmark"
+  },
+  "global": {
+    "entropy_threshold_transition": 0.7
+  },
+  "characters": {
+    "misaki": {
+      "role": "phase_transition",
+      "points": 25,
+      "volatility": 0.15,
+      "baseline": {
+        "x1": 8.8,
+        "x2": 2.0,
+        "alpha": 3.0
+      },
+      "events": [
+        {
+          "t": -6,
+          "delta": {
+            "x1": -0.1,
+            "x2": 0.1,
+            "alpha": 0.2
+          },
+          "event": "研究所での通常業務"
+        },
+        {
+          "t": -4,
+          "delta": {
+            "x1": -0.2,
+            "x2": 0.4,
+            "alpha": -0.2
+          },
+          "event": "独白ログ発見"
+        },
+        {
+          "t": -2,
+          "delta": {
+            "x1": -0.3,
+            "x2": 0.6,
+            "alpha": -0.4
+          },
+          "event": "内的揺らぎ"
+        },
+        {
+          "t": 0,
+          "delta": {
+            "x1": -0.4,
+            "x2": 0.8,
+            "alpha": -0.6
+          },
+          "event": "裁判所条件調整"
+        },
+        {
+          "t": 1,
+          "delta": {
+            "x1": -0.3,
+            "x2": 0.6,
+            "alpha": -0.5
+          },
+          "event": "裏からの介入決断"
+        },
+        {
+          "t": 3,
+          "delta": {
+            "x1": -0.2,
+            "x2": 0.4,
+            "alpha": -0.4
+          },
+          "event": "価値転換"
+        },
+        {
+          "t": 6,
+          "delta": {
+            "x1": -0.1,
+            "x2": 0.2,
+            "alpha": -0.3
+          },
+          "event": "退職と技術再定義"
+        }
+      ]
+    },
+    "takumi": {
+      "role": "high_entropy",
+      "points": 30,
+      "volatility": 0.35,
+      "baseline": {
+        "x1": 5.5,
+        "x2": 6.5,
+        "alpha": 1.8
+      },
+      "events": [
+        {
+          "t": -5,
+          "delta": {
+            "x1": 0.1,
+            "x2": 0.3,
+            "alpha": 0.1
+          },
+          "event": "自主実験開始"
+        },
+        {
+          "t": -3,
+          "delta": {
+            "x1": 0.2,
+            "x2": 0.5,
+            "alpha": 0.2
+          },
+          "event": "陰口を聴く"
+        },
+        {
+          "t": -1,
+          "delta": {
+            "x1": 0.3,
+            "x2": 0.7,
+            "alpha": 0.3
+          },
+          "event": "独白ログ"
+        },
+        {
+          "t": 0,
+          "delta": {
+            "x1": 0.4,
+            "x2": 0.9,
+            "alpha": 0.4
+          },
+          "event": "鬼火に巻き込まれる"
+        },
+        {
+          "t": 2,
+          "delta": {
+            "x1": -0.2,
+            "x2": -0.4,
+            "alpha": -0.2
+          },
+          "event": "裁判所で選択"
+        },
+        {
+          "t": 5,
+          "delta": {
+            "x1": -0.3,
+            "x2": -0.5,
+            "alpha": -0.3
+          },
+          "event": "生還"
+        }
+      ]
+    },
+    "kurokawa": {
+      "role": "overfit",
+      "points": 25,
+      "volatility": 0.05,
+      "baseline": {
+        "x1": 9.2,
+        "x2": 1.8,
+        "alpha": 3.5
+      },
+      "events": [
+        {
+          "t": -6,
+          "delta": {
+            "x1": 0.1,
+            "x2": 0.0,
+            "alpha": 0.3
+          },
+          "event": "研究推進"
+        },
+        {
+          "t": -2,
+          "delta": {
+            "x1": 0.1,
+            "x2": -0.1,
+            "alpha": 0.3
+          },
+          "event": "支配強化"
+        },
+        {
+          "t": 2,
+          "delta": {
+            "x1": 0.0,
+            "x2": -0.1,
+            "alpha": 0.2
+          },
+          "event": "破綻兆候"
+        }
+      ]
+    },
+    "reina": {
+      "role": "catalyst",
+      "points": 20,
+      "volatility": 0.25,
+      "baseline": {
+        "x1": 4.5,
+        "x2": 7.2,
+        "alpha": 1.2
+      },
+      "events": [
+        {
+          "t": -2,
+          "delta": {
+            "x1": 0.2,
+            "x2": 0.4,
+            "alpha": 0.1
+          },
+          "event": "夢を見る"
+        },
+        {
+          "t": 0,
+          "delta": {
+            "x1": 0.3,
+            "x2": 0.7,
+            "alpha": 0.2
+          },
+          "event": "裁判所突入"
+        },
+        {
+          "t": 3,
+          "delta": {
+            "x1": -0.2,
+            "x2": -0.4,
+            "alpha": -0.1
+          },
+          "event": "帰還"
+        }
+      ]
+    },
+    "aoi": {
+      "role": "stabilizer",
+      "points": 10,
+      "volatility": 0.1,
+      "baseline": {
+        "x1": 5.0,
+        "x2": 5.0,
+        "alpha": 1.0
+      },
+      "events": [
+        {
+          "t": -1,
+          "delta": {
+            "x1": 0.1,
+            "x2": 0.1,
+            "alpha": 0.0
+          },
+          "event": "同行決意"
+        },
+        {
+          "t": 0,
+          "delta": {
+            "x1": 0.1,
+            "x2": 0.2,
+            "alpha": 0.0
+          },
+          "event": "現実側支援"
+        },
+        {
+          "t": 3,
+          "delta": {
+            "x1": 0.0,
+            "x2": -0.1,
+            "alpha": 0.0
+          },
+          "event": "回復支援"
+        }
+      ]
+    },
+    "tome": {
+      "role": "安定アンカー（低エントロピー）",
+      "z_default": 0,
+      "notes": "レイナ/タクミを現実側で支える。揺れは小さいが、場を安定させる境界条件として重要。",
+      "key_events": [
+        "トメがレイナの電話を受ける",
+        "冷めてもいいようにまんじゅうを作る",
+        "村の大人への根回し",
+        "救助の段取りを整える",
+        "救助の兆しを感じる",
+        "日常の回復を見守る"
+      ]
+    }
+  },
+  "version": "v2"
+}
