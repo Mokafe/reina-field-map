@@ -1,12 +1,35 @@
+# Hoshimigato Komizu Ado　Shrine Sensor Log (Fictional) — Sample Data + Dashboard
+
+📖 原作（note）：「第七章　夜の神社と探偵ごっこ」  
+https://note.com/major_ruff2386/n/n478d06567843?magazine_key=m60ea3421f863
+
+
+小説『『ほんまもんを選ぶ夏 ― 星見ケ里の光と影』の世界観（観測端末ログ／異常窓／コールドスポット／位相マッピング）を、
+**数理っぽい見た目で説明するためのフィクション用デモ**です。
+
+https://github.com/user-attachments/assets/449f17c6-fbb5-4c15-84e8-cb6a642eabc2
+
+
 # Hoshimigato Shrine Sensor Log (Fictional) — Sample Data + Dashboard
 
-小説の世界観（「観測端末ログ」「異常窓」「コールドスポット」「位相マッピング」）を説明するための、**でっち上げ（フィクション）ログ**生成と可視化ダッシュボードです。
+- データは実測ではなく、物語演出のために作ったサンプル（それっぽいもの）です
+- 「異常窓（event_flag=1）」の間だけスパイクと温度低下が出ていますが、物語説明のためのデータです
+
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
+https://colab.research.google.com/github/Mokafe/reina-field-map/blob/main/hoshimigato-shrine-sim/notebooks/Hoshimigato_Shrine_Dashboard.ipynb
+)
+
+
+
+![preview](docs_preview.png)
+
 
 - 3軸の擬似EMF（X/Y/Z）から MAG = √(X²+Y²+Z²) を計算
 - 事件窓（event_flag=1）でスパイク群発 + 温度低下（コールドスポット）
 - X/Y を複素平面に見立て、位相 `phase = arctan2(Y, X)` を可視化
 
-> 注意: これは物語説明用の合成データです。実測データではありません。
+> 注意: これは物語説明用のデータです。実測データではありません。
 
 ---
 
